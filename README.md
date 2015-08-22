@@ -5,9 +5,9 @@ Desenvolvido para Trabalho de Estágio 1 - FA7
 ## Sumário
 
 * [Enredo](#enredo)
-* [Objetivo Geral](#enredo)
-* [Objetivos Específicos](#enredo)
-* [Tecnologias Utilizadas](#enredo)
+* [Objetivo Geral](#ObjetivoGeral)
+* [Objetivos Específicos](#ObjetivosEspecíficos)
+* [Tecnologias Utilizadas](#TecnologiasUtilizadas)
 
 # Enredo
 Subway Run é um jogo móvel de uma corrida interminável. Onde o personagem Gaara tem que correr pelos metrôs das cidades coletando itens e desviando dos obstáculos. Esses itens serviram para aumentar a pontuação do jogador quando ele perder na fase. Além de poder liberar novos itens para personalizar seu personagem. Ultrapasse seus próprios recordes e fique em primeiro lugar no ranking de pontuação contra seus amigos.

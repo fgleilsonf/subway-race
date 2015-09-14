@@ -2,140 +2,98 @@ local composer = require( "composer" )
 
 local scene = composer.newScene()
 
+local xMin = display.screenOriginX
+local yMin = display.screenOriginY
+local xMax = display.contentWidth - display.screenOriginX
+local yMax = display.contentHeight - display.screenOriginY
+local _W = display.contentWidth
+local _H = display.contentHeight
+
 function scene:create( event )
     local sceneGroup = self.view
-
-	local xMin = display.screenOriginX
-	local yMin = display.screenOriginY
-	local xMax = display.contentWidth - display.screenOriginX
-	local yMax = display.contentHeight - display.screenOriginY
-	local _W = display.contentWidth
-	local _H = display.contentHeight
-
-	local background = display.newImageRect("images/background.jpg", xMax-xMin, yMax-yMin)
+	local background = display.newImageRect("images/fundo.jpg", xMax-xMin, yMax-yMin)
 	background.x = _W * 0.5
 	background.y = _H * 0.5
 
-	local sheetData =  { width=45, height=63, numFrames=12 }
+	local trilho1 = display.newImage( "images/trilhos.jpg" )
+	trilho1.x = _W * 0.2
+	trilho1.y = _H - 200
+	trilho1.height = _H
+	trilho1.width = _W
+	trilho1.path.x1 = 200
+	trilho1.path.x2 = 120
+	trilho1.path.x3 = 90
+	trilho1.path.y1 = 200
+	trilho1.path.y4 = 200
 
+	local trilho2 = display.newImage( "images/trilhos.jpg" )
+	trilho2.x = _W * 0.45
+	trilho2.path.x1 = 50
+	trilho2.path.x2 = 90
+	trilho2.path.x3 = -40
+	trilho2.path.x4 = -10
+	trilho2.path.y1 = 360
+	trilho2.path.y4 = 360
+
+	local moeda = display.newImage( "images/moeda.png" )
+	moeda.x = -25
+	moeda.y = _H - 400
+	moeda.path.x1 = 190
+	moeda.path.x2 = 190
+	moeda.path.x3 = 190
+	moeda.path.x4 = 190
+	moeda.path.y1 = 190
+	moeda.path.y2 = 190
+	moeda.path.y3 = 190
+	moeda.path.y4 = 190
+
+	local moeda = display.newImage( "images/moeda.png" )
+	moeda.x = -80
+	moeda.y = _H - 340
+	moeda.path.x1 = 190
+	moeda.path.x2 = 190
+	moeda.path.x3 = 190
+	moeda.path.x4 = 190
+	moeda.path.y1 = 190
+	moeda.path.y2 = 190
+	moeda.path.y3 = 190
+	moeda.path.y4 = 190
+	moeda.fill.effect = "filter.monotone"
+	moeda.fill.effect.r = 1
+	moeda.fill.effect.g = 0.2
+	moeda.fill.effect.b = 0
+	moeda.fill.effect.a = 1
+	
+	local sheetData =  { width=45, height=63, numFrames=12 }
+	local spriteOptions = { name="gaara", start=1, count=12, time=300 } 
 	local sheet = graphics.newImageSheet("images/gaara.png", sheetData)
 
 	local sequenceData = 
 	{
-		{ name = "idleDown", start = 1, count = 1, time = 0, loopCount = 1 },
-	    { name = "idleLeft", start = 4, count = 1, time = 0, loopCount = 1 },
-	    { name = "idleRight", start = 7, count = 1, time = 0, loopCount = 1 },
-	    { name = "idleUp", start = 10, count = 1, time = 0, loopCount = 1 },
-	    { name = "moveDown", start = 2, count = 2, time = 300, loopCount = 0 },
-	    { name = "moveLeft", start = 5, count = 2, time = 300, loopCount = 0 },
-	    { name = "moveRight", start = 8, count = 2, time = 300, loopCount = 0 },
-	    { name = "moveUp", start = 11, count = 2, time = 300, loopCount = 0 }
+		{ name = "idleDown", start = 1, count = 1, time = 3000, loopCount = 1 },
+	    { name = "idleLeft", start = 4, count = 1, time = 3000, loopCount = 1 },
+	    { name = "idleRight", start = 7, count = 1, time = 3000, loopCount = 1 },
+	    { name = "idleUp", start = 10, count = 1, time = 3000, loopCount = 1 },
+	    { name = "moveDown", start = 2, count = 2, time = 3000, loopCount = 0 },
+	    { name = "moveLeft", start = 5, count = 2, time = 3000, loopCount = 0 },
+	    { name = "moveRight", start = 8, count = 2, time = 3000, loopCount = 0 },
+	    { name = "moveUp", start = 11, count = 2, time = 3000, loopCount = 0 },
 	}
 
-	local player = display.newSprite(sheet, sequenceData)
+	local spriteInstance = display.newSprite(sheet, sequenceData)
+	spriteInstance.x = _W * 0.5
+	spriteInstance.y = _H - 30
 
-	player.x = _W * .5
-	player.y = _H
+	spriteInstance:setSequence("idleUp")
 
-	player:setSequence("idleUp")
+	local TIMER = 4000
+	local tamanho = 5
+	local value = 180
 
-	local buttons = {}
+	transition.to(trilho1, { time=TIMER, y = _H - 80 } )
+	transition.to(trilho2, { time=8000, y = _H - 80 } )
 
-	buttons[1] = display.newImage("images/button-navegation.png")
-	buttons[1].x = 250
-	buttons[1].y = 380
-	buttons[1].myName = "up"
-	buttons[1].rotation = -90
-
-	buttons[2] = display.newImage("images/button-navegation.png")
-	buttons[2].x = 250
-	buttons[2].y = 440
-	buttons[2].myName = "down"
-	buttons[2].rotation = 90
-
-	buttons[3] = display.newImage("images/button-navegation.png")
-	buttons[3].x = 210
-	buttons[3].y = 410
-	buttons[3].myName = "left"
-	buttons[3].rotation = 180
-
-	buttons[4] = display.newImage("images/button-navegation.png")
-	buttons[4].x = 290
-	buttons[4].y = 410
-	buttons[4].myName = "right"
-
-	local yAxis = 0
-	local xAxis = 0
-
-	local touchFunction = function(e)
-		local eventName = e.phase
-		local direction = e.target.myName
-		
-		if eventName == "began" or eventName == "moved" then
-			if direction == "up" then 
-				player:setSequence("moveUp")			
-
-				yAxis = -5
-				xAxis = 0
-			elseif direction == "down" then 
-				player:setSequence("moveDown")
-
-				yAxis = 5
-				xAxis = 0
-			elseif direction == "right" then
-				player:setSequence("moveRight")
-
-				xAxis = 5
-				yAxis = 0
-			elseif direction == "left" then
-				player:setSequence("moveLeft")
-
-				xAxis = -5
-				yAxis = 0
-			end
-		else 
-			if e.target.myName == "up" then 
-				player:setSequence("idleUp")
-			elseif e.target.myName == "down" then 
-				player:setSequence("idleDown")
-			elseif e.target.myName == "right" then
-				player:setSequence("idleRight")
-			elseif e.target.myName == "left" then
-				player:setSequence("idleLeft")
-			end
-			
-			yAxis = 0
-			xAxis = 0
-		end
-	end
-
-	local j=1
-
-	for j=1, #buttons do 
-		buttons[j]:addEventListener("touch", touchFunction)
-	end
-
-	local update = function()
-		player.x = player.x + xAxis
-		player.y = player.y + yAxis
-
-		if player.x <= player.width * .5 then 
-			player.x = player.width * .5
-		elseif player.x >= _W - player.width * .5 then 
-			player.x = _W - player.width * .5
-		end
-
-		if player.y <= player.height * .5 then
-			player.y = player.height * .5
-		elseif player.y >= _H - player.height * .5 then 
-			player.y = _H - player.height * .5
-		end 
-		
-		player:play()
-	end
-
-	Runtime:addEventListener("enterFrame", update)
-end
+end 
 
 function scene:show( event )
 
@@ -158,7 +116,6 @@ function scene:hide( event )
 end
 
 function scene:destroy( event )
-
     local sceneGroup = self.view
 end
 

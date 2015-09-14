@@ -2,31 +2,76 @@ local composer = require( "composer" )
 local scene = composer.newScene()
 
 local widget = require "widget"
+local facebook = require("facebook")
+local json = require("json")
+
+local function createStatusMessage( message, x, y )
+	local textObject = display.newText( message, 0, 0, native.systemFontBold, 24 )
+	textObject:setFillColor( 1,1,1 )
+
+	local group = display.newGroup()
+	group.x = x
+	group.y = y
+	group:insert( textObject, true )
+
+	local r = 10
+	local roundedRect = display.newRoundedRect( 0, 0, textObject.contentWidth + 2*r, textObject.contentHeight + 2*r, r )
+	group:insert( 1, roundedRect, true )
+
+	group.textObject = textObject
+	return group
+end
 
 function scene:create( event )
 	local sceneGroup = self.view
 
-	local title = display.newText( "Subway Run", 100, 200, "Verdana", 24 )
-	title.x = display.contentWidth  * 0.5
-	title.y = 100
+	local statusMessage = createStatusMessage( "Subway Run", display.contentWidth  * 0.5, 100 )
 
-	local imagePlay = display.newImage( "play.png" )
+	local imagePlay = display.newImage( "images/play.png" )
 	imagePlay.x = display.contentWidth / 2
 	imagePlay.y = display.contentHeight / 2
 	imagePlay.width = 48
     imagePlay.height = 48
 
-	local myImage = display.newImage( "face.png" )
-	myImage.x = display.contentWidth / 2
-	myImage.y = display.contentHeight - 80
-	myImage.width = 48
-    myImage.height = 48
-    myImage.visible = false
+	local btnFacebook = display.newImage( "images/face.png" )
+	btnFacebook.x = display.contentWidth / 2
+	btnFacebook.y = display.contentHeight - 90
+	btnFacebook.width = 48
+    btnFacebook.height = 48
+    btnFacebook.visible = false
+
+    local centerX = display.contentCenterX
+    local StatusMessageY = display.contentHeight - 30
+
+    local statusMessage = createStatusMessage( "Não conectado", centerX, StatusMessageY )
+
+    function listener(event)
+    	if ( "session" == event.type ) then
+    		statusMessage.textObject.text = event.phase
+			facebook.request( "me" )
+    	elseif ( "request" == event.type ) then
+	        local response = event.response
+	        
+			if ( not event.isError ) then
+		        response = json.decode( event.response )
+				statusMessage.textObject.text = response.name
+			else
+				statusMessage.textObject.text = "Desconhecido"
+			end
+		end
+    end
+
+	function btnFacebook:tap(event)
+		local appId  = "896263840455584"
+		facebook.login( appId, listener, {"publish_actions"} )
+	end
+
 
     function imagePlay:tap(event)
 		composer.gotoScene( "scene1", "fade", 500 )
 	end
 	imagePlay:addEventListener("tap", imagePlay)
+	btnFacebook:addEventListener("tap", btnFacebook)
 
 end
 

@@ -1,0 +1,29 @@
+settings = {
+	
+	android =
+    {
+        usesPermissions =
+        {
+            "android.permission.INTERNET",
+        },
+    },
+    plugins =
+    {
+        ["facebook"] =
+        {
+            publisherId = "com.coronalabs"
+        }
+    },
+    iphone =
+	    {
+	        plist =
+	        {
+	            UIApplicationExitsOnSuspend = false,
+	            FacebookAppID = "XXXXXXXXXX",  --replace XXXXXXXXXX with your Facebook App ID
+	            CFBundleURLTypes =
+	            {
+	                { CFBundleURLSchemes = { "fbXXXXXXXXXX", } }  --replace XXXXXXXXXX with your Facebook App ID
+	            }
+	        }
+	    }
+}

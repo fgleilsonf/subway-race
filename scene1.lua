@@ -1,3 +1,4 @@
+
 local composer = require( "composer" )
 
 local scene = composer.newScene()
@@ -11,29 +12,20 @@ local _H = display.contentHeight
 
 function scene:create( event )
     local sceneGroup = self.view
-	local background = display.newImageRect("images/fundo.jpg", xMax-xMin, yMax-yMin)
-	background.x = _W * 0.5
-	background.y = _H * 0.5
+	-- local background = display.newImageRect("images/fundo.jpg", xMax-xMin, yMax-yMin)
+	-- background.x = _W * 0.5
+	-- background.y = _H * 0.5
 
 	local trilho1 = display.newImage( "images/trilhos.jpg" )
 	trilho1.x = _W * 0.2
 	trilho1.y = _H - 200
 	trilho1.height = _H
 	trilho1.width = _W
-	trilho1.path.x1 = 200
+	trilho1.path.x1 = 250
 	trilho1.path.x2 = 120
 	trilho1.path.x3 = 90
 	trilho1.path.y1 = 200
 	trilho1.path.y4 = 200
-
-	local trilho2 = display.newImage( "images/trilhos.jpg" )
-	trilho2.x = _W * 0.45
-	trilho2.path.x1 = 50
-	trilho2.path.x2 = 90
-	trilho2.path.x3 = -40
-	trilho2.path.x4 = -10
-	trilho2.path.y1 = 360
-	trilho2.path.y4 = 360
 
 	local moeda = display.newImage( "images/moeda.png" )
 	moeda.x = -25

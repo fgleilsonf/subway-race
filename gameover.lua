@@ -1,3 +1,4 @@
+
 local composer = require( "composer" )
 local scene = composer.newScene()
 
@@ -33,48 +34,29 @@ function scene:create( event )
 	btnStartGame.width = 48
     btnStartGame.height = 48
 
-	local btnFacebook = display.newImage( "images/face.png" )
-	btnFacebook.x = display.contentWidth / 2
-	btnFacebook.y = display.contentHeight - 90
-	btnFacebook.width = 48
-    btnFacebook.height = 48
-    btnFacebook.visible = false
-
     local centerX = display.contentCenterX
-    local y = display.contentHeight - 30
-    local labelStatusConectedFacebook = createStatusMessage( "Não conectado", centerX,  y)
-
-    function listener(event)
-    	if ( "session" == event.type ) then
-    		statusMessage.textObject.text = event.phase
-			facebook.request( "me" )
-    	elseif ( "request" == event.type ) then
-	        local response = event.response
-	        
-			if ( not event.isError ) then
-		        response = json.decode( event.response )
-				statusMessage.textObject.text = response.name
-			else
-				statusMessage.textObject.text = "Desconhecido"
-			end
-		end
-    end
-
-	function btnFacebook:tap(event)
-		local appId  = "896263840455584"
-		facebook.login( appId, listener, {"publish_actions"} )
-	end
+    local y = display.contentHeight - 250
+    local labelStatusConectedFacebook = createStatusMessage( "Game Over", centerX,  y)
 
     function btnStartGame:tap(event)
-		composer.gotoScene( "game" )
+		composer.gotoScene( "game", "fade", 800 )
 	end
 	btnStartGame:addEventListener("tap", btnStartGame)
-	btnFacebook:addEventListener("tap", btnFacebook)
+
+	local timer = composer.getVariable( "timer" )
+	local quantEstrelaNormal = composer.getVariable( "quantEstrelaNormal" )
+	local quantEstrela = composer.getVariable( "quantEstrela" )
+
+	local pontuacao = createStatusMessage( "pontuação: "..timer, display.contentWidth  * 0.5, 300 )
+	local estrelaNormal = createStatusMessage( "Estrela normal: "..quantEstrelaNormal, display.contentWidth  * 0.5, 355 )
+	local estrela = createStatusMessage( "Estrela: "..quantEstrela, display.contentWidth  * 0.5, 410 )
 
 	sceneGroup:insert(titleGame)
 	sceneGroup:insert(btnStartGame)
-	sceneGroup:insert(btnFacebook)
 	sceneGroup:insert(labelStatusConectedFacebook)
+	sceneGroup:insert(pontuacao)
+	sceneGroup:insert(estrelaNormal)
+	sceneGroup:insert(estrela)
 end
 
 function scene:show( event )

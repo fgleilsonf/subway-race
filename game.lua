@@ -29,7 +29,7 @@ function scene:create( event )
     local addTimePontuacao = {}
     local timerPontuacao
 
-    local TIMER = 500
+    local TIMER = 1000
 
     local captureSound = audio.loadSound( "capture.mp3" )
     local gameOverSound = audio.loadSound( "gameover.mp3" )
@@ -159,7 +159,7 @@ function scene:create( event )
         transition.to(trilho1, { time=2000, y = _H - 530 } ) 
     end
 
-    transition.to(trilho1, { time=1000, y = _H - 550, onComplete=fnLoadTrilho } ) 
+    -- transition.to(trilho1, { time=1000, y = _H - 550, onComplete=fnLoadTrilho } ) 
 
     local moedaPontuacao = display.newImage( "images/moeda.png" )
     moedaPontuacao.x = 290
@@ -238,92 +238,148 @@ function scene:create( event )
 
     Runtime:addEventListener("touch", swipe)
 
-    multiplo = 6
-    function loadTransitionMoeda(object, colidir) 
+    print("_H", _H)
 
-        function fnDone()
-            if (math.floor(spriteInstance.x) == math.floor(colidir)) then
-                capturaMoeda(object)
+    local multiplo = 4
+
+    function fnMoveMoeda11(object)
+        print("FINISH")
+    end
+
+    function fnMoveMoeda10(object)
+        object.x = object.x - multiplo
+        transition.to(object, { 
+            time=TIMER, 
+            y = _H - 210, 
+            onComplete = function(object)
+                fnMoveMoeda11(object)
+            end 
+        })
+    end
+
+    function fnMoveMoeda9(object)
+        object.x = object.x - multiplo
+        transition.to(object, { 
+            time=TIMER, 
+            y = _H - 240, 
+            onComplete = function(object)
+                fnMoveMoeda10(object) 
+            end    
+        })    
+    end
+
+    function fnMoveMoeda8(object)
+        object.x = object.x - multiplo
+        transition.to(object, { 
+            time = TIMER, 
+            y = _H - 270, 
+            onComplete = function(object)
+                fnMoveMoeda9(object) 
             end
-            object.isVisible = false
-        end
+        })    
+    end
 
-        function fnMoveMoeda15()
-            object.x = object.x - multiplo
-            transition.to(object, { time=TIMER, y = _H - 210, onComplete=fnDone } )    
-        end
+    function fnMoveMoeda7(object)
+        print("fnMoveMoeda7 Objeto", object);
+        print("loadTransitionMoeda Objeto.y", object.y);
+        object.x = object.x - multiplo
+        transition.to(object, { 
+            time = TIMER, 
+            y = _H - 300, 
+            onComplete = function(object) 
+                fnMoveMoeda8(object)
+            end
+        })    
+    end
 
-        function fnMoveMoeda14()
-            object.x = object.x - multiplo
-            transition.to(object, { time=TIMER, y = _H - 230, onComplete=fnMoveMoeda15 } )    
-        end
+    function fnMoveMoeda6(object)
+        print("fnMoveMoeda6 Objeto", object);
+        print("loadTransitionMoeda Objeto.y", object.y);
+        object.x = object.x - multiplo
+        transition.to(object, { 
+            time=TIMER, 
+            y = _H - 330, 
+            onComplete = function(object) 
+                fnMoveMoeda7(object) 
+            end
+        })    
+    end
 
-        function fnMoveMoeda13()
-            object.x = object.x - multiplo
-            transition.to(object, { time=TIMER, y = _H - 250, onComplete=fnMoveMoeda14 } )    
-        end
+    function fnMoveMoeda5(object)
+        print("fnMoveMoeda5 Objeto", object);
+        print("loadTransitionMoeda Objeto.y", object.y);
+        object.x = object.x - multiplo
+        transition.to(object, { 
+            time=TIMER, 
+            y = _H - 360, 
+            onComplete = function(object) 
+                fnMoveMoeda6(object) 
+            end
+        })    
+    end
 
-        function fnMoveMoeda12()
-            object.x = object.x - multiplo
-            transition.to(object, { time=TIMER, y = _H - 270, onComplete=fnMoveMoeda13 } )    
-        end
+    function fnMoveMoeda4(object)
+        print("fnMoveMoeda4 Objeto", object);
+        print("loadTransitionMoeda Objeto.y", object.y);
+        object.x = object.x - multiplo
+        transition.to(object, { 
+            time=TIMER, 
+            y = _H - 390, 
+            onComplete = function (object)
+                fnMoveMoeda5(object)
+            end
+        })    
+    end
 
-        function fnMoveMoeda11()
-            object.x = object.x - multiplo
-            transition.to(object, { time=TIMER, y = _H - 290, onComplete=fnMoveMoeda12 } )    
-        end
+    function fnMoveMoeda3(object)
+        print("fnMoveMoeda3 Objeto", object);
+        print("loadTransitionMoeda Objeto.y", object.y);
+        object.x = object.x - multiplo
+        transition.to(object, { 
+            time=TIMER, 
+            y = _H - 420, 
+            onComplete = function (object) 
+                fnMoveMoeda4(object)
+            end
+        })    
+    end
 
-        function fnMoveMoeda10()
-            object.x = object.x - multiplo
-            transition.to(object, { time=TIMER, y = _H - 310, onComplete=fnMoveMoeda11 } )    
-        end
+    function fnMoveMoeda2(object)
+        print("fnMoveMoeda2 Objeto", object);
+        print("loadTransitionMoeda Objeto.y", object.y);
+        object.x = object.x - multiplo
+        transition.to(object, { 
+            time=TIMER, 
+            y = _H - 450, 
+            onComplete = function(object) 
+                fnMoveMoeda3(object) 
+            end
+        })    
+    end
 
-        function fnMoveMoeda9()
-            object.x = object.x - multiplo
-            transition.to(object, { time=TIMER, y = _H - 330, onComplete=fnMoveMoeda10 } )    
-        end
+    function fnMoveMoeda(object)
+        print("fnMoveMoeda Objeto", object);
+        print("loadTransitionMoeda Objeto.y", object.y);
+        object.x = object.x - multiplo
+        transition.to(object, { 
+            time=TIMER, 
+            y = _H - 480, 
+            onComplete = function(object)  
+                fnMoveMoeda2(object) 
+            end
+        })    
+    end
 
-        function fnMoveMoeda8()
-            object.x = object.x - multiplo
-            transition.to(object, { time=TIMER, y = _H - 350, onComplete=fnMoveMoeda9 } )    
-        end
-
-        function fnMoveMoeda7()
-            object.x = object.x - multiplo
-            transition.to(object, { time=TIMER, y = _H - 370, onComplete=fnMoveMoeda8 } )    
-        end
-
-        function fnMoveMoeda6()
-            object.x = object.x - multiplo
-            transition.to(object, { time=TIMER, y = _H - 390, onComplete=fnMoveMoeda7 } )    
-        end
-
-        function fnMoveMoeda5( )
-            object.x = object.x - multiplo
-            transition.to(object, { time=TIMER, y = _H - 410, onComplete=fnMoveMoeda6 } )    
-        end
-
-        function fnMoveMoeda4( )
-            object.x = object.x - multiplo
-            transition.to(object, { time=TIMER, y = _H - 430, onComplete=fnMoveMoeda5 } )    
-        end
-
-        function fnMoveMoeda3( )
-            object.x = object.x - multiplo
-            transition.to(object, { time=TIMER, y = _H - 450, onComplete=fnMoveMoeda4 } )    
-        end
-
-        function fnMoveMoeda2( )
-            object.x = object.x - multiplo
-            transition.to(object, { time=TIMER, y = _H - 470, onComplete=fnMoveMoeda3 } )    
-        end
-
-        function fnMoveMoeda()
-            object.x = object.x - multiplo
-            transition.to(object, { time=TIMER, y = _H - 490, onComplete=fnMoveMoeda2 } )    
-        end
-
-        transition.to(object, { time=TIMER, y = _H - 510, onComplete=fnMoveMoeda } )
+    function loadTransitionMoeda(object) 
+        print("loadTransitionMoeda Objeto", object);
+        print("loadTransitionMoeda Objeto.y", object.y);
+        transition.to(object, {
+            time=TIMER, 
+            y = _H - 510, 
+            onComplete = function(object)  
+                fnMoveMoeda(object)  
+            end
+        })
     end
 
     function createMoeda(position, tipo)
@@ -380,7 +436,36 @@ function scene:create( event )
         end 
     end
 
-    timer.performWithDelay( 2000, addTimeCreateMoeda, 0 )
+    -- timer.performWithDelay( 2000, addTimeCreateMoeda, 0 )
+
+    local objectMoeda1 = display.newImage( "images/moeda.png" )
+    objectMoeda1.myName = _MOEDA_TIPO_MONOTONE
+    objectMoeda1.x = _MOEDA_LEFT
+    objectMoeda1.y = _H - 540
+    objectMoeda1.path.x1 = 190
+    objectMoeda1.path.x2 = 190
+    objectMoeda1.path.x3 = 190
+    objectMoeda1.path.x4 = 190
+    objectMoeda1.path.y1 = 190
+    objectMoeda1.path.y2 = 190
+    objectMoeda1.path.y3 = 190
+    objectMoeda1.path.y4 = 190
+
+    local objectMoeda2 = display.newImage( "images/moeda.png" )
+    objectMoeda2.myName = _MOEDA_TIPO_MONOTONE
+    objectMoeda2.x = _MOEDA_CENTER
+    objectMoeda2.y = _H - 540
+    objectMoeda2.path.x1 = 190
+    objectMoeda2.path.x2 = 190
+    objectMoeda2.path.x3 = 190
+    objectMoeda2.path.x4 = 190
+    objectMoeda2.path.y1 = 190
+    objectMoeda2.path.y2 = 190
+    objectMoeda2.path.y3 = 190
+    objectMoeda2.path.y4 = 190
+
+    loadTransitionMoeda(objectMoeda1) 
+    loadTransitionMoeda(objectMoeda2) 
 
     function setData()
         composer.setVariable( "timer", countPoints )

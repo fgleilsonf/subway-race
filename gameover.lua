@@ -1,3 +1,6 @@
+--[[
+	@author Gleilson Ferreira
+]]
 
 local composer = require( "composer" )
 local scene = composer.newScene()
@@ -6,57 +9,52 @@ local widget = require "widget"
 local facebook = require("facebook")
 local json = require("json")
 
-local function createStatusMessage( message, x, y )
-	local textObject = display.newText( message, 0, 0, native.systemFontBold, 24 )
-	textObject:setFillColor( 1,1,1 )
-
-	local group = display.newGroup()
-	group.x = x
-	group.y = y
-	group:insert( textObject, true )
-
-	local r = 10
-	local roundedRect = display.newRoundedRect( 0, 0, textObject.contentWidth + 2*r, textObject.contentHeight + 2*r, r )
-	group:insert( 1, roundedRect, true )
-
-	group.textObject = textObject
-	return group
-end
+local helper = require( "helper" )
 
 function scene:create( event )
 	local sceneGroup = self.view
 
-	local titleGame = createStatusMessage( "Subway Run", display.contentWidth  * 0.5, 100 )
+	local xMin = display.screenOriginX
+    local yMin = display.screenOriginY
+    local xMax = display.contentWidth - display.screenOriginX
+    local yMax = display.contentHeight - display.screenOriginY
+    local _W = display.contentWidth
+    local _H = display.contentHeight
 
-	local btnStartGame = display.newImage( "images/play.png" )
-	btnStartGame.x = display.contentWidth / 2
-	btnStartGame.y = display.contentHeight / 2
-	btnStartGame.width = 48
-    btnStartGame.height = 48
+	local background = display.newImageRect("images/background-pages.jpg", xMax-xMin, yMax-yMin)
+	background.x = _W * 0.5
+	background.y = _H * 0.5
+    sceneGroup:insert(background)
+
+	local titleGame = createMessage( "Subway Run", display.contentWidth  * 0.5, 40 )
+	sceneGroup:insert(titleGame)
 
     local centerX = display.contentCenterX
     local y = display.contentHeight - 250
-    local labelStatusConectedFacebook = createStatusMessage( "Game Over", centerX,  y)
 
-    function btnStartGame:tap(event)
-		composer.gotoScene( "game", "fade", 800 )
-	end
-	btnStartGame:addEventListener("tap", btnStartGame)
+    local msgGameOver = createMessage( "Game Over", centerX,  display.contentHeight * 0.5)
+    sceneGroup:insert(msgGameOver)
 
 	local timer = composer.getVariable( "timer" )
 	local quantEstrelaNormal = composer.getVariable( "quantEstrelaNormal" )
 	local quantEstrela = composer.getVariable( "quantEstrela" )
 
-	local pontuacao = createStatusMessage( "pontuação: "..timer, display.contentWidth  * 0.5, 300 )
-	local estrelaNormal = createStatusMessage( "Estrela normal: "..quantEstrelaNormal, display.contentWidth  * 0.5, 355 )
-	local estrela = createStatusMessage( "Estrela: "..quantEstrela, display.contentWidth  * 0.5, 410 )
+	local sumTotal = timer + (quantEstrelaNormal * 5) + (quantEstrela * 10)
 
-	sceneGroup:insert(titleGame)
-	sceneGroup:insert(btnStartGame)
-	sceneGroup:insert(labelStatusConectedFacebook)
+	local pontuacao = createMessage( "pontuação: "..sumTotal, display.contentWidth  * 0.5, 300 )
 	sceneGroup:insert(pontuacao)
-	sceneGroup:insert(estrelaNormal)
-	sceneGroup:insert(estrela)
+
+    local btnBackPage = display.newImage( "images/play_again.png" )
+    btnBackPage.x = display.contentWidth * 0.5
+    btnBackPage.y = display.contentHeight - 40
+    sceneGroup:insert(btnBackPage)
+
+    function btnBackPage:tap()
+    	composer.removeScene( "gameover" )
+        composer.gotoScene( "game" )
+    end
+
+    btnBackPage:addEventListener("tap", btnBackPage)
 end
 
 function scene:show( event )
